@@ -1,0 +1,21 @@
+version: '3'
+services:
+  mysql-container:
+    image: mysql:8-debian
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: vaigo
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./SQL/vaigo.sql:/docker-entrypoint-initdb.d/tu_archivo.sql
+      - db_data:/var/lib/mysql
+
+  spring-boot-app:
+    build: ../as
+    depends_on:
+      - mysql-container
+    ports:
+      - "8080:8080"
+volumes:
+  db_data:
